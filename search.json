@@ -21,6 +21,13 @@
     "text": "References\n\nCRAN: Package deltatest\nhoxo-m/deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\nDeng, A., Knoblich, U., & Lu, J. (2018). Applying the Delta Method in Metric Analytics: A Practical Guide with Novel Ideas. Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining. doi:10.1145/3219819.3219919"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "HOXO-M Blog",
+    "section": "",
+    "text": "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\n\n\n\n\n\n\nR\n\n\n\n\n\n\n\n\n\nMar 11, 2025\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\nMLE Adjustment for High-Dimensional Logistic Regression\n\n\n\n\n\n\nR\n\n\n\n\n\n\n\n\n\nNov 8, 2024\n\n\nKoji Makiyama\n\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -28,10 +35,24 @@
     "text": "About this blog"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "HOXO-M Blog",
+    "objectID": "posts/adjustMLE/index.html",
+    "href": "posts/adjustMLE/index.html",
+    "title": "MLE Adjustment for High-Dimensional Logistic Regression",
     "section": "",
-    "text": "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\n\n\n\n\n\n\nR\n\n\n\n\n\n\n\n\n\nMar 11, 2025\n\n\nKoji Makiyama\n\n\n\n\n\n\nNo matching items"
+    "text": "The maximum likelihood estimator (MLE) of the logistic regression model is not an unbiased estimator. Therefore, estimates calculated with glm() contain bias. Since the MLE satisfies consistency and asymptotic normality, the bias can be disregarded when the sample size is large. However, in the analysis of high-dimensional data, the sample size is sometimes relatively small compared to the dimension of input variables.\nFor example, let’s consider a scenario where the number of input variables p = 300, and the sample size n = 2000. Additionally, the true parameters beta consist of\nIn such a case, the MLE returned by glm() contains a non-negligible bias.\np &lt;- 300\nn &lt;- 2000\n\nset.seed(314)\nx &lt;- rnorm(n * p, mean = 0, sd = sqrt(1/n))\nX &lt;- matrix(x, nrow = n, ncol = p)\nbeta &lt;- matrix(rep(c(10, -10, 0), each = p/3), nrow = p, ncol = 1)\nprob &lt;- plogis(X %*% beta)\ny &lt;- rbinom(n, 1, prob)\n\nfit &lt;- glm(y ~ X, family = binomial, x = TRUE)\n\nlibrary(ggplot2)\ntheme_set(theme_bw())\ndf &lt;- data.frame(index = seq_len(p), mle = coef(fit)[-1])\nggplot(df, aes(index, mle)) +\n  geom_point(color = \"blue\") +\n  annotate(\"segment\", x = c(0, 100, 200), xend = c(100, 200, 300), \n           y = c(10, -10, 0), yend = c(10, -10, 0), linewidth = 1.5) +\n  scale_x_continuous(breaks = c(0, 100, 200, 300)) +\n  ylim(-30, 30) + xlab(\"Index of parameters\") + ylab(\"MLE\") +\n  ggtitle(\"True (black line) and MLE (blue point)\")\nYou can see that the blue points (MLE) are significantly outside the perimeter of the black line (true).\nThe purpose of this package is to alleviate the bias by adjusting the MLE. To achieve this, we implemented two methods:\nThe adjustMLE function in our package is designed to mitigate this bias.\nlibrary(adjustMLE)\n\nfit_adj &lt;- adjustMLE(fit)\n\ndf &lt;- data.frame(index = seq_len(p), mle = coef(fit_adj)[-1])\nggplot(df, aes(index, mle)) +\n  geom_point(color = \"blue\") +\n  annotate(\"segment\", x = c(0, 100, 200), xend = c(100, 200, 300), \n           y = c(10, -10, 0), yend = c(10, -10, 0), linewidth = 1.5) +\n  scale_x_continuous(breaks = c(0, 100, 200, 300)) +\n  ylim(-30, 30) + xlab(\"Index of parameters\") + ylab(\"Adjusted MLE\") +\n  ggtitle(\"True (black line) and adjusted MLE (blue point)\")\nFor more details, refer to https://github.com/hoxo-m/adjustMLE."
+  },
+  {
+    "objectID": "posts/adjustMLE/index.html#installation",
+    "href": "posts/adjustMLE/index.html#installation",
+    "title": "MLE Adjustment for High-Dimensional Logistic Regression",
+    "section": "Installation",
+    "text": "Installation\nYou can install the package from GitHub.\ninstall.packages(\"remotes\") # if you have not installed \"remotes\" package\nremotes::install_github(\"hoxo-m/adjustMLE\")"
+  },
+  {
+    "objectID": "posts/adjustMLE/index.html#references",
+    "href": "posts/adjustMLE/index.html#references",
+    "title": "MLE Adjustment for High-Dimensional Logistic Regression",
+    "section": "References",
+    "text": "References\n\nSur, P., & Candès, E.J. (2018). A modern maximum-likelihood theory for high-dimensional logistic regression. Proceedings of the National Academy of Sciences of the United States of America, 116, 14516 - 14525.\nYadlowsky, S., Yun, T., McLean, C.Y., & D’Amour, A. (2021). SLOE: A Faster Method for Statistical Inference in High-Dimensional Logistic Regression. Neural Information Processing Systems."
   }
 ]
