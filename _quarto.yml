@@ -4,6 +4,7 @@ project:
 website:
   title: "HOXO-M Blog"
   site-url: https://hoxo-m.github.io/blog/
+  description: "A blog about R and Data Analysis."
   navbar:
     right:
 #      - about.qmd
