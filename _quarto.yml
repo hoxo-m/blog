@@ -12,6 +12,8 @@ website:
         href: https://github.com/hoxo-m/
 #      - icon: twitter
 #        href: https://twitter.com
+      - text: "R-bloggers"
+        href: https://www.r-bloggers.com/
 format:
   html:
     theme: cosmo
