@@ -1,5 +1,6 @@
 ---
 title: "HOXO-M Blog"
+subtitle: "Insights into R and Data Analysis"
 listing:
   contents: posts
   sort: "date desc"
