@@ -107,7 +107,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -175,7 +175,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar"><div class="quarto-margin-header"><div class="margin-header-item">
+<!-- R-bloggers の最新記事 -->
+<section id="rss-feed">
+  <h5 class="quarto-listing-category-title">Latest from R-bloggers</h5>
+  <ul id="rss-items"></ul>
+</section>
+
+<script>
+  async function fetchRSS() {
+    const response = await fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.r-bloggers.com/feed/");
+    const data = await response.json();
+
+    const items = data.items.slice(0, 5); // 最新5件を取得
+    let html = "";
+    items.forEach(item => {
+      html += `<li><a href="${item.link}" target="_blank">${item.title}</a></li>`;
+    });
+
+    document.getElementById("rss-items").innerHTML = html;
+  }
+
+  fetchRSS();
+</script>
+
+</div></div>
+        
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
