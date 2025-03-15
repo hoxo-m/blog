@@ -55,7 +55,7 @@ The purpose of this package is to alleviate the bias by adjusting the MLE. To ac
 - “ProbeFrontier,” as proposed by Sur and Candès (2018), and
 - “SLOE,” as proposed by Yadlowsky et al. (2021).
 
-The adjustMLE function in our package is designed to mitigate this bias.
+The `adjustMLE` function in our package is designed to mitigate this bias.
 
 ```{r}
 library(adjustMLE)

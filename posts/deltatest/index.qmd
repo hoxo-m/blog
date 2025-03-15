@@ -1,7 +1,7 @@
 ---
 title: "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing"
 author: "Koji Makiyama"
-date: "2025-03-11"
+date: "2025-03-15"
 categories: [R]
 ---
 
@@ -21,7 +21,7 @@ When the standard Z-test is applied to such correlated data, the resulting p-val
 
 ![](20250305012135)
 
-To address this problem, Deng et al. (2018) proposed a modified statistical hypothesis testing method. Their approach replaces the standard variance estimation formula in the Z-test with an approximate formula derived via the Delta method, which accounts for within-user correlation. To simplify the application of this method, the deltatest package has been developed.
+To address this problem, Deng et al. (2018) proposed a modified statistical hypothesis testing method. Their approach replaces the standard variance estimation formula in the Z-test with an approximate formula derived via the Delta method, which accounts for within-user correlation. To simplify the application of this method, the **deltatest** package has been developed.
 
 To illustrate how to use this package, we prepare a data frame that includes columns for the number of clicks and page-views aggregated for each user. This data frame also contains a column indicating whether each user was assigned to the control or treatment group.
 
@@ -55,7 +55,7 @@ For more details, refer to [https://github.com/hoxo-m/deltatest](https://github.
 
 ## Installation
 
-You can install the deltatest package from CRAN.
+You can install the **deltatest** package from CRAN.
 
 ```r
 install.packages("deltatest")
