@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Koji Makiyama">
-<meta name="dcterms.date" content="2025-03-11">
+<meta name="dcterms.date" content="2025-03-15">
 
 <title>New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing – HOXO-M Blog</title>
 <style>
@@ -164,7 +164,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 11, 2025</p>
+        <p class="date">March 15, 2025</p>
       </div>
     </div>
     
@@ -178,7 +178,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar"><div class="quarto-margin-header"><div class="margin-header-item">
 <!-- R-bloggers の最新記事 -->
 <section id="rss-feed">
-  <h5 class="quarto-listing-category-title">Latest from R-bloggers</h5>
+  <h5 class="quarto-listing-rss-title">Latest from R-bloggers</h5>
   <ul id="rss-items"></ul>
 </section>
 
@@ -213,7 +213,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This discrepancy raises concerns for statistical hypothesis testing, which assumes that data points are independent and identically distributed (i.i.d.). Specifically, a single user can generate multiple page-views, and each user may have a different probability of clicking. Consequently, the data may exhibit within-user correlation, thereby violating the i.i.d. assumption.</p>
 <p>When the standard Z-test is applied to such correlated data, the resulting p-values do not follow the expected uniform distribution under the null hypothesis. As a result, smaller p-values tend to occur more frequently even when there is no true difference, increasing the risk of falsely detecting a significant difference.</p>
 <p><img src="20250305012135.png" class="img-fluid"></p>
-<p>To address this problem, Deng et al.&nbsp;(2018) proposed a modified statistical hypothesis testing method. Their approach replaces the standard variance estimation formula in the Z-test with an approximate formula derived via the Delta method, which accounts for within-user correlation. To simplify the application of this method, the deltatest package has been developed.</p>
+<p>To address this problem, Deng et al.&nbsp;(2018) proposed a modified statistical hypothesis testing method. Their approach replaces the standard variance estimation formula in the Z-test with an approximate formula derived via the Delta method, which accounts for within-user correlation. To simplify the application of this method, the <strong>deltatest</strong> package has been developed.</p>
 <p>To illustrate how to use this package, we prepare a data frame that includes columns for the number of clicks and page-views aggregated for each user. This data frame also contains a column indicating whether each user was assigned to the control or treatment group.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -264,7 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For more details, refer to <a href="https://github.com/hoxo-m/deltatest">https://github.com/hoxo-m/deltatest</a>.</p>
 <section id="installation" class="level2">
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
-<p>You can install the deltatest package from CRAN.</p>
+<p>You can install the <strong>deltatest</strong> package from CRAN.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"deltatest"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="references" class="level2">

@@ -10,7 +10,7 @@
 <atom:link href="https://hoxo-m.github.io/blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog about R and Data Analysis.</description>
 <generator>quarto-1.5.57</generator>
-<lastBuildDate>Mon, 10 Mar 2025 15:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 14 Mar 2025 15:00:00 GMT</lastBuildDate>
 <item>
   <title>New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing</title>
   <dc:creator>Koji Makiyama</dc:creator>
@@ -25,7 +25,7 @@
 <p>This discrepancy raises concerns for statistical hypothesis testing, which assumes that data points are independent and identically distributed (i.i.d.). Specifically, a single user can generate multiple page-views, and each user may have a different probability of clicking. Consequently, the data may exhibit within-user correlation, thereby violating the i.i.d. assumption.</p>
 <p>When the standard Z-test is applied to such correlated data, the resulting p-values do not follow the expected uniform distribution under the null hypothesis. As a result, smaller p-values tend to occur more frequently even when there is no true difference, increasing the risk of falsely detecting a significant difference.</p>
 <p><img src="https://hoxo-m.github.io/blog/posts/deltatest/20250305012135.png" class="img-fluid"></p>
-<p>To address this problem, Deng et al.&nbsp;(2018) proposed a modified statistical hypothesis testing method. Their approach replaces the standard variance estimation formula in the Z-test with an approximate formula derived via the Delta method, which accounts for within-user correlation. To simplify the application of this method, the deltatest package has been developed.</p>
+<p>To address this problem, Deng et al.&nbsp;(2018) proposed a modified statistical hypothesis testing method. Their approach replaces the standard variance estimation formula in the Z-test with an approximate formula derived via the Delta method, which accounts for within-user correlation. To simplify the application of this method, the <strong>deltatest</strong> package has been developed.</p>
 <p>To illustrate how to use this package, we prepare a data frame that includes columns for the number of clicks and page-views aggregated for each user. This data frame also contains a column indicating whether each user was assigned to the control or treatment group.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
@@ -186,7 +186,7 @@ font-style: inherit;">#&gt;       0.245959325       0.248654038       0.00269471
 <p>For more details, refer to <a href="https://github.com/hoxo-m/deltatest">https://github.com/hoxo-m/deltatest</a>.</p>
 <section id="installation" class="level2">
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
-<p>You can install the deltatest package from CRAN.</p>
+<p>You can install the <strong>deltatest</strong> package from CRAN.</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
@@ -207,7 +207,7 @@ font-style: inherit;">"deltatest"</span>)</span></code></pre></div>
  ]]></description>
   <category>R</category>
   <guid>https://hoxo-m.github.io/blog/posts/deltatest/</guid>
-  <pubDate>Mon, 10 Mar 2025 15:00:00 GMT</pubDate>
+  <pubDate>Fri, 14 Mar 2025 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>MLE Adjustment for High-Dimensional Logistic Regression</title>
@@ -486,7 +486,7 @@ font-style: inherit;">"True (black line) and MLE (blue point)"</span>)</span></c
 <li>“ProbeFrontier,” as proposed by Sur and Candès (2018), and</li>
 <li>“SLOE,” as proposed by Yadlowsky et al.&nbsp;(2021).</li>
 </ul>
-<p>The adjustMLE function in our package is designed to mitigate this bias.</p>
+<p>The <code>adjustMLE</code> function in our package is designed to mitigate this bias.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
