@@ -51,7 +51,7 @@ This version of the Z-test yields p-values that follow the expected uniform dist
 
 ![](20250305015654)
 
-For more details, refer to [https://github.com/hoxo-m/deltatest](https://github.com/hoxo-m/deltatest).
+For more details, refer to [https://hoxo-m.github.io/deltatest/](https://hoxo-m.github.io/deltatest/).
 
 ## Installation
 
