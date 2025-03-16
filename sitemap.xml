@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://hoxo-m.github.io/blog/posts/deltatest/index.html</loc>
-    <lastmod>2025-03-15T10:41:50.558Z</lastmod>
+    <loc>https://hoxo-m.github.io/blog/posts/adjustMLE/index.html</loc>
+    <lastmod>2025-03-16T02:24:53.729Z</lastmod>
   </url>
   <url>
     <loc>https://hoxo-m.github.io/blog/index.html</loc>
-    <lastmod>2025-03-12T12:14:34.949Z</lastmod>
+    <lastmod>2025-03-16T02:24:53.729Z</lastmod>
   </url>
   <url>
-    <loc>https://hoxo-m.github.io/blog/about.html</loc>
-    <lastmod>2025-03-11T09:49:31.074Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hoxo-m.github.io/blog/posts/adjustMLE/index.html</loc>
-    <lastmod>2025-03-15T07:53:21.792Z</lastmod>
+    <loc>https://hoxo-m.github.io/blog/posts/deltatest/index.html</loc>
+    <lastmod>2025-03-16T02:24:53.729Z</lastmod>
   </url>
 </urlset>

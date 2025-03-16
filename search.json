@@ -1,40 +1,5 @@
 [
   {
-    "objectID": "posts/deltatest/index.html",
-    "href": "posts/deltatest/index.html",
-    "title": "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing",
-    "section": "",
-    "text": "In online A/B testing, we often face a significant practical challenge: the randomization unit differs from the analysis unit. Typically, control and treatment groups are randomly assigned at the user level, while metrics—such as click-through rate—are measured at a more granular level (e.g., per page-view). In this case, the randomization unit is user, but the analysis unit is page-view.\nThis discrepancy raises concerns for statistical hypothesis testing, which assumes that data points are independent and identically distributed (i.i.d.). Specifically, a single user can generate multiple page-views, and each user may have a different probability of clicking. Consequently, the data may exhibit within-user correlation, thereby violating the i.i.d. assumption.\nWhen the standard Z-test is applied to such correlated data, the resulting p-values do not follow the expected uniform distribution under the null hypothesis. As a result, smaller p-values tend to occur more frequently even when there is no true difference, increasing the risk of falsely detecting a significant difference.\nTo address this problem, Deng et al. (2018) proposed a modified statistical hypothesis testing method. Their approach replaces the standard variance estimation formula in the Z-test with an approximate formula derived via the Delta method, which accounts for within-user correlation. To simplify the application of this method, the deltatest package has been developed.\nTo illustrate how to use this package, we prepare a data frame that includes columns for the number of clicks and page-views aggregated for each user. This data frame also contains a column indicating whether each user was assigned to the control or treatment group.\nlibrary(dplyr)\n\nn_user &lt;- 2000\n\nset.seed(314)\ndata &lt;- deltatest::generate_dummy_data(n_user) |&gt; \n  mutate(group = if_else(group == 0, \"control\", \"treatment\")) |&gt;\n  group_by(user_id, group) |&gt; \n  summarise(clicks = sum(metric), pageviews = n(), .groups = \"drop\")\n\ndata\n#&gt; # A tibble: 2,000 × 4\n#&gt;    user_id group     clicks pageviews\n#&gt;      &lt;int&gt; &lt;chr&gt;      &lt;int&gt;     &lt;int&gt;\n#&gt;  1       1 treatment      1         6\n#&gt;  2       2 treatment      2        11\n#&gt;  3       3 control        0        17\n#&gt;  4       4 control        4        12\n#&gt;  5       5 control        5        10\n#&gt;  6       6 control        1        15\n#&gt;  7       7 control        2         6\n#&gt;  8       8 treatment      2        11\n#&gt;  9       9 treatment      2        16\n#&gt; 10      10 control        0        17\n#&gt; # ℹ 1,990 more rows\nThe statistical hypothesis test using the Delta method can then be performed on this data as follows:\nlibrary(deltatest)\n\ndeltatest(data, clicks / pageviews, by = group)\n#&gt; \n#&gt;  Two Sample Z-test Using the Delta Method\n#&gt; \n#&gt; data:  clicks/pageviews by group\n#&gt; Z = 0.31437, p-value = 0.7532\n#&gt; alternative hypothesis: true difference in means between control and treatment is not equal to 0\n#&gt; 95 percent confidence interval:\n#&gt;  -0.01410593  0.01949536\n#&gt; sample estimates:\n#&gt;   mean in control mean in treatment        difference \n#&gt;       0.245959325       0.248654038       0.002694713\nThis version of the Z-test yields p-values that follow the expected uniform distribution under the null hypothesis, even when within-user correlation is present.\nFor more details, refer to https://hoxo-m.github.io/deltatest/."
-  },
-  {
-    "objectID": "posts/deltatest/index.html#installation",
-    "href": "posts/deltatest/index.html#installation",
-    "title": "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing",
-    "section": "Installation",
-    "text": "Installation\nYou can install the deltatest package from CRAN.\ninstall.packages(\"deltatest\")"
-  },
-  {
-    "objectID": "posts/deltatest/index.html#references",
-    "href": "posts/deltatest/index.html#references",
-    "title": "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing",
-    "section": "References",
-    "text": "References\n\nCRAN: Package deltatest\nhoxo-m/deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\nDeng, A., Knoblich, U., & Lu, J. (2018). Applying the Delta Method in Metric Analytics: A Practical Guide with Novel Ideas. Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining. doi:10.1145/3219819.3219919"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "HOXO-M Blog",
-    "section": "",
-    "text": "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\n\n\n\n\n\n\nR\n\n\n\n\n\n\n\n\n\nMar 15, 2025\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\nMLE Adjustment for High-Dimensional Logistic Regression\n\n\n\n\n\n\nR\n\n\n\n\n\n\n\n\n\nNov 8, 2024\n\n\nKoji Makiyama\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this blog"
-  },
-  {
     "objectID": "posts/adjustMLE/index.html",
     "href": "posts/adjustMLE/index.html",
     "title": "MLE Adjustment for High-Dimensional Logistic Regression",
@@ -54,5 +19,33 @@
     "title": "MLE Adjustment for High-Dimensional Logistic Regression",
     "section": "References",
     "text": "References\n\nSur, P., & Candès, E.J. (2018). A modern maximum-likelihood theory for high-dimensional logistic regression. Proceedings of the National Academy of Sciences of the United States of America, 116, 14516 - 14525.\nYadlowsky, S., Yun, T., McLean, C.Y., & D’Amour, A. (2021). SLOE: A Faster Method for Statistical Inference in High-Dimensional Logistic Regression. Neural Information Processing Systems."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "HOXO-M Blog",
+    "section": "",
+    "text": "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\n\n\n\n\n\n\nR\n\n\n\n\n\n\n\n\n\nMar 15, 2025\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\nMLE Adjustment for High-Dimensional Logistic Regression\n\n\n\n\n\n\nR\n\n\n\n\n\n\n\n\n\nNov 8, 2024\n\n\nKoji Makiyama\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/deltatest/index.html",
+    "href": "posts/deltatest/index.html",
+    "title": "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing",
+    "section": "",
+    "text": "In online A/B testing, we often face a significant practical challenge: the randomization unit differs from the analysis unit. Typically, control and treatment groups are randomly assigned at the user level, while metrics—such as click-through rate—are measured at a more granular level (e.g., per page-view). In this case, the randomization unit is user, but the analysis unit is page-view.\nThis discrepancy raises concerns for statistical hypothesis testing, which assumes that data points are independent and identically distributed (i.i.d.). Specifically, a single user can generate multiple page-views, and each user may have a different probability of clicking. Consequently, the data may exhibit within-user correlation, thereby violating the i.i.d. assumption.\nWhen the standard Z-test is applied to such correlated data, the resulting p-values do not follow the expected uniform distribution under the null hypothesis. As a result, smaller p-values tend to occur more frequently even when there is no true difference, increasing the risk of falsely detecting a significant difference.\nTo address this problem, Deng et al. (2018) proposed a modified statistical hypothesis testing method. Their approach replaces the standard variance estimation formula in the Z-test with an approximate formula derived via the Delta method, which accounts for within-user correlation. To simplify the application of this method, the deltatest package has been developed.\nTo illustrate how to use this package, we prepare a data frame that includes columns for the number of clicks and page-views aggregated for each user. This data frame also contains a column indicating whether each user was assigned to the control or treatment group.\nlibrary(dplyr)\n\nn_user &lt;- 2000\n\nset.seed(314)\ndata &lt;- deltatest::generate_dummy_data(n_user) |&gt; \n  mutate(group = if_else(group == 0, \"control\", \"treatment\")) |&gt;\n  group_by(user_id, group) |&gt; \n  summarise(clicks = sum(metric), pageviews = n(), .groups = \"drop\")\n\ndata\n#&gt; # A tibble: 2,000 × 4\n#&gt;    user_id group     clicks pageviews\n#&gt;      &lt;int&gt; &lt;chr&gt;      &lt;int&gt;     &lt;int&gt;\n#&gt;  1       1 treatment      1         6\n#&gt;  2       2 treatment      2        11\n#&gt;  3       3 control        0        17\n#&gt;  4       4 control        4        12\n#&gt;  5       5 control        5        10\n#&gt;  6       6 control        1        15\n#&gt;  7       7 control        2         6\n#&gt;  8       8 treatment      2        11\n#&gt;  9       9 treatment      2        16\n#&gt; 10      10 control        0        17\n#&gt; # ℹ 1,990 more rows\nThe statistical hypothesis test using the Delta method can then be performed on this data as follows:\nlibrary(deltatest)\n\ndeltatest(data, clicks / pageviews, by = group)\n#&gt; \n#&gt;  Two Sample Z-test Using the Delta Method\n#&gt; \n#&gt; data:  clicks/pageviews by group\n#&gt; Z = 0.31437, p-value = 0.7532\n#&gt; alternative hypothesis: true difference in means between control and treatment is not equal to 0\n#&gt; 95 percent confidence interval:\n#&gt;  -0.01410593  0.01949536\n#&gt; sample estimates:\n#&gt;   mean in control mean in treatment        difference \n#&gt;       0.245959325       0.248654038       0.002694713\nThis version of the Z-test yields p-values that follow the expected uniform distribution under the null hypothesis, even when within-user correlation is present.\nFor more details, refer to https://hoxo-m.github.io/deltatest/."
+  },
+  {
+    "objectID": "posts/deltatest/index.html#installation",
+    "href": "posts/deltatest/index.html#installation",
+    "title": "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing",
+    "section": "Installation",
+    "text": "Installation\nYou can install the deltatest package from CRAN.\ninstall.packages(\"deltatest\")"
+  },
+  {
+    "objectID": "posts/deltatest/index.html#references",
+    "href": "posts/deltatest/index.html#references",
+    "title": "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing",
+    "section": "References",
+    "text": "References\n\nCRAN: Package deltatest\nhoxo-m/deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\nDeng, A., Knoblich, U., & Lu, J. (2018). Applying the Delta Method in Metric Analytics: A Practical Guide with Novel Ideas. Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining. doi:10.1145/3219819.3219919"
   }
 ]

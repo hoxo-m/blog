@@ -8,9 +8,9 @@
 <title>HOXO-M Blog</title>
 <link>https://hoxo-m.github.io/blog/</link>
 <atom:link href="https://hoxo-m.github.io/blog/index.xml" rel="self" type="application/rss+xml"/>
-<description>A blog about R and Data Analysis.</description>
-<generator>quarto-1.5.57</generator>
-<lastBuildDate>Fri, 14 Mar 2025 15:00:00 GMT</lastBuildDate>
+<description>Insights into R and Data Analysis</description>
+<generator>quarto-1.6.42</generator>
+<lastBuildDate>Sat, 15 Mar 2025 00:00:00 GMT</lastBuildDate>
 <item>
   <title>New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing</title>
   <dc:creator>Koji Makiyama</dc:creator>
@@ -207,7 +207,7 @@ font-style: inherit;">"deltatest"</span>)</span></code></pre></div>
  ]]></description>
   <category>R</category>
   <guid>https://hoxo-m.github.io/blog/posts/deltatest/</guid>
-  <pubDate>Fri, 14 Mar 2025 15:00:00 GMT</pubDate>
+  <pubDate>Sat, 15 Mar 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>MLE Adjustment for High-Dimensional Logistic Regression</title>
@@ -672,7 +672,7 @@ font-style: inherit;">"hoxo-m/adjustMLE"</span>)</span></code></pre></div>
  ]]></description>
   <category>R</category>
   <guid>https://hoxo-m.github.io/blog/posts/adjustMLE/</guid>
-  <pubDate>Thu, 07 Nov 2024 15:00:00 GMT</pubDate>
+  <pubDate>Fri, 08 Nov 2024 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
