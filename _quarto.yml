@@ -4,7 +4,7 @@ project:
 website:
   title: "HOXO-M Blog"
   site-url: https://hoxo-m.github.io/blog/
-  description: "A blog about R and Data Analysis."
+  description: "Insights into R and Data Analysis"
   margin-header: sidebar.html
   navbar:
     right:
@@ -20,5 +20,5 @@ format:
     theme: cosmo
     css: styles.css
 
-
-
+execute:
+  freeze: auto
