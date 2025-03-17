@@ -12,7 +12,7 @@ website:
       - icon: github
         href: https://github.com/hoxo-m/
       - icon: rss-fill
-        href: https://hoxo-m.github.io/blog/index.xml
+        href: index.xml
 #      - icon: twitter
 #        href: https://twitter.com
 format:

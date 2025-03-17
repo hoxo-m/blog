@@ -65,4 +65,4 @@ install.packages("deltatest")
 
 - [CRAN: Package deltatest](https://cran.r-project.org/package=deltatest)
 - [hoxo-m/deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing](https://github.com/hoxo-m/deltatest)
-- Deng, A., Knoblich, U., & Lu, J. (2018). Applying the Delta Method in Metric Analytics: A Practical Guide with Novel Ideas. *Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining.* [doi:10.1145/3219819.3219919](https://doi.org/10.1145/3219819.3219919)
+- Deng, A., Knoblich, U., & Lu, J. (2018). Applying the Delta Method in Metric Analytics: A Practical Guide with Novel Ideas. *Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining.*
