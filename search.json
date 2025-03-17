@@ -46,6 +46,6 @@
     "href": "posts/deltatest/index.html#references",
     "title": "New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing",
     "section": "References",
-    "text": "References\n\nCRAN: Package deltatest\nhoxo-m/deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\nDeng, A., Knoblich, U., & Lu, J. (2018). Applying the Delta Method in Metric Analytics: A Practical Guide with Novel Ideas. Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining. doi:10.1145/3219819.3219919"
+    "text": "References\n\nCRAN: Package deltatest\nhoxo-m/deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\nDeng, A., Knoblich, U., & Lu, J. (2018). Applying the Delta Method in Metric Analytics: A Practical Guide with Novel Ideas. Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining."
   }
 ]
