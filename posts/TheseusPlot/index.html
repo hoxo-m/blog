@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Koji Makiyama">
-<meta name="dcterms.date" content="2024-11-08">
+<meta name="dcterms.date" content="2025-08-30">
 
-<title>MLE Adjustment for High-Dimensional Logistic Regression – HOXO-M Blog</title>
+<title>New R Package TheseusPlot: Visualizing Decomposition of Differences in Rate Metrics – HOXO-M Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -147,7 +147,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">MLE Adjustment for High-Dimensional Logistic Regression</h1>
+      <h1 class="title">New R Package TheseusPlot: Visualizing Decomposition of Differences in Rate Metrics</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">R</div>
               </div>
@@ -167,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">November 8, 2024</p>
+        <p class="date">August 30, 2025</p>
       </div>
     </div>
     
@@ -220,88 +220,160 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>The maximum likelihood estimator (MLE) of the logistic regression model is not an unbiased estimator. Therefore, estimates calculated with <code>glm()</code> contain bias. Since the MLE satisfies consistency and asymptotic normality, the bias can be disregarded when the sample size is large. However, in the analysis of high-dimensional data, the sample size is sometimes relatively small compared to the dimension of input variables.</p>
-<p>For example, let’s consider a scenario where the number of input variables <code>p = 300</code>, and the sample size <code>n = 2000</code>. Additionally, the true parameters beta consist of</p>
-<ul>
-<li><code>beta = 10</code> for the first 1/3,</li>
-<li><code>beta = -10</code> for the next 1/3, and</li>
-<li><code>beta = 0</code> for the remaining 1/3.</li>
-</ul>
-<p>In such a case, the MLE returned by <code>glm()</code> contains a non-negligible bias.</p>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">1. Overview</h2>
+<p>In data analysis, when a metric differs between two groups, we sometimes want to investigate whether a particular subgroup is driving that difference. For example, when a key metric decline is detected compared to the previous year, you may want to conduct a more detailed analysis. In this analysis, you may focus on gender among the attributes and examine whether the decline occurred among male, female, or both. However, this type of analysis is challenging when the metric is a rate, because the magnitude of each subgroup’s contribution to the rate cannot be simply calculated, unlike in the case of volume metrics.</p>
+<p>To address this issue, we propose an approach inspired by the story of the <em><a href="https://en.wikipedia.org/wiki/Ship_of_Theseus">Ship of Theseus</a></em>. This approach involves gradually replacing the components of one group with those of another, recalculating the metric at each step. The change in the metric at each step can then be interpreted as the contribution of each subgroup to the overall difference.</p>
+<p>For instance, suppose the metric was 6.2% in 2024 and decreased to 5.2% in 2025. Again, we focus on gender. We replace the male data within the 2024 dataset with the male data from 2025 and recalculate the metric. As a result, the metric would drop by 0.8 percentage points, reaching 5.4%. In this case, the contribution of the male group to the change in the metric is -0.8 percentage points. Next, we replace the female data from 2024 with that from 2025. The dataset then consists entirely of 2025 data, and the metric drops by 0.2 percentage points, reaching 5.2%. Thus, the contribution of the female group is -0.2 percentage points.</p>
+<p>When visualized, the results appear as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">300</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">314</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n <span class="sc">*</span> p, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">/</span>n))</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(x, <span class="at">nrow =</span> n, <span class="at">ncol =</span> p)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="dv">0</span>), <span class="at">each =</span> p<span class="sc">/</span><span class="dv">3</span>), <span class="at">nrow =</span> p, <span class="at">ncol =</span> <span class="dv">1</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">plogis</span>(X <span class="sc">%*%</span> beta)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, prob)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> X, <span class="at">family =</span> binomial, <span class="at">x =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">index =</span> <span class="fu">seq_len</span>(p), <span class="at">mle =</span> <span class="fu">coef</span>(fit)[<span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(index, mle)) <span class="sc">+</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">200</span>), <span class="at">xend =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">300</span>), </span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="dv">0</span>), <span class="at">yend =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="dv">0</span>), <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">300</span>)) <span class="sc">+</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">30</span>, <span class="dv">30</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Index of parameters"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"MLE"</span>) <span class="sc">+</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"True (black line) and MLE (blue point)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/overview-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>You can see that the blue points (MLE) are significantly outside the perimeter of the black line (true).</p>
-<p>The purpose of this package is to alleviate the bias by adjusting the MLE. To achieve this, we implemented two methods:</p>
-<ul>
-<li>“ProbeFrontier,” as proposed by Sur and Candès (2018), and</li>
-<li>“SLOE,” as proposed by Yadlowsky et al.&nbsp;(2021).</li>
-</ul>
-<p>The <code>adjustMLE</code> function in our package is designed to mitigate this bias.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(adjustMLE)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>fit_adj <span class="ot">&lt;-</span> <span class="fu">adjustMLE</span>(fit)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">index =</span> <span class="fu">seq_len</span>(p), <span class="at">mle =</span> <span class="fu">coef</span>(fit_adj)[<span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(index, mle)) <span class="sc">+</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">200</span>), <span class="at">xend =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">300</span>), </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="dv">0</span>), <span class="at">yend =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="dv">0</span>), <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">300</span>)) <span class="sc">+</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">30</span>, <span class="dv">30</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Index of parameters"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Adjusted MLE"</span>) <span class="sc">+</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"True (black line) and adjusted MLE (blue point)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>For more details, refer to <a href="https://github.com/hoxo-m/adjustMLE">https://github.com/hoxo-m/adjustMLE</a>.</p>
-<section id="installation" class="level2">
-<h2 class="anchored" data-anchor-id="installation">Installation</h2>
-<p>You can install the package from GitHub.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"remotes"</span>) <span class="co"># if you have not installed "remotes" package</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"hoxo-m/adjustMLE"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>From this plot, we can see that the decline in the metric is primarily driven by the male group. We call this visualization the “Theseus Plot.”</p>
+<p>The <strong>TheseusPlot</strong> package is designed to make it easy to generate Theseus Plots for various attributes.</p>
 </section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">2. Installation</h2>
+<p>You can install the <strong>TheseusPlot</strong> package from <a href="https://cran.r-project.org/package=TheseusPlot">CRAN</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"TheseusPlot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can install the development version from <a href="https://github.com/hoxo-m/TheseusPlot">GitHub</a> with:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"hoxo-m/TheseusPlot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="details" class="level2">
+<h2 class="anchored" data-anchor-id="details">3. Details</h2>
+<section id="prepare-data" class="level3">
+<h3 class="anchored" data-anchor-id="prepare-data">3.1 Prepare Data</h3>
+<p>To create Theseus plots, you need two data frames that share common columns.</p>
+<p>We use the 2013 New York City flight data from <a href="https://cran.r-project.org/package=nycflights13">nycflights13</a> as a demo dataset. Here, we will define the rate metric as the proportion of flights that arrived on time. In December 2013, the on-time arrival rate dropped substantially compared to November. We investigate the cause using a Theseus plot.</p>
+<p>First, we create an <code>on_time</code> column in the data frame to indicate whether each flight arrived on time. Next, we extract the flights for November and December into separate data frames to form two comparison groups. The on-time arrival rate was 64% in November and dropped to 47% in December.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> flights <span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(arr_delay)) <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">on_time =</span> arr_delay <span class="sc">&lt;=</span> <span class="dv">0</span>) <span class="sc">|&gt;</span>  <span class="co"># Arrived on time</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(airlines, <span class="at">by =</span> <span class="st">"carrier"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">carrier =</span> name) <span class="sc">|&gt;</span>  <span class="co"># Convert carrier abbreviations to full names</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, origin, dest, carrier, dep_delay, on_time)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 8</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    year month   day origin dest  carrier                dep_delay on_time</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;                      &lt;dbl&gt; &lt;lgl&gt;  </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  2013     1     1 EWR    IAH   United Air Lines Inc.          2 FALSE  </span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  2013     1     1 LGA    IAH   United Air Lines Inc.          4 FALSE  </span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  2013     1     1 JFK    MIA   American Airlines Inc.         2 FALSE  </span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  2013     1     1 JFK    BQN   JetBlue Airways               -1 TRUE   </span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  2013     1     1 LGA    ATL   Delta Air Lines Inc.          -6 TRUE   </span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6  2013     1     1 EWR    ORD   United Air Lines Inc.         -4 FALSE</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>data_Nov <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> <span class="fu">filter</span>(month <span class="sc">==</span> <span class="dv">11</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>data_Dec <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> <span class="fu">filter</span>(month <span class="sc">==</span> <span class="dv">12</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>data_Nov <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">on_time_rate =</span> <span class="fu">mean</span>(on_time)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(on_time_rate)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.6426161</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>data_Dec <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">on_time_rate =</span> <span class="fu">mean</span>(on_time)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(on_time_rate)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.4672835</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="basics" class="level3">
+<h3 class="anchored" data-anchor-id="basics">3.2 Basics</h3>
+<p>Using the two prepared data frames, we first create a <code>ship</code> object. The <code>ship</code> object is an instance of the R6 class <code>ShipOfTheseus</code>, designed to create Theseus plots.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TheseusPlot)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ship <span class="ot">&lt;-</span> <span class="fu">create_ship</span>(data_Nov, data_Dec, <span class="at">y =</span> on_time, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"November"</span>, <span class="st">"December"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can create a Theseus plot by passing column names to the <code>plot</code> method of a <code>ship</code> object. For example, to create a Theseus plot for the airport of origin:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ship<span class="sc">$</span><span class="fu">plot</span>(origin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/plot_origin-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>New York City has three major airports, and Newark Liberty International Airport (EWR) accounted for the largest share of the decline in the on-time arrival rate.</p>
+<p>Note that the number of flights at each airport matters, as a larger flight volume is expected to have a greater impact. To make this clear, the Theseus plot displays the data size for each group within each subgroup as a bar chart. From this, we see that the number of flights is similar across airports, allowing for direct comparison of contributions.</p>
+<p>In summary, a Theseus plot consists of two components:</p>
 <ul>
-<li>Sur, P., &amp; Candès, E.J. (2018). A modern maximum-likelihood theory for high-dimensional logistic regression. Proceedings of the National Academy of Sciences of the United States of America, 116, 14516 - 14525.</li>
-<li>Yadlowsky, S., Yun, T., McLean, C.Y., &amp; D’Amour, A. (2021). SLOE: A Faster Method for Statistical Inference in High-Dimensional Logistic Regression. Neural Information Processing Systems.</li>
+<li>A waterfall plot showing how much each subgroup contributed to the change in the metric.</li>
+<li>A bar chart representing the sample size for each group within each subgroup.</li>
 </ul>
+<p>A <code>ship</code> object also provides the <code>table</code> method to inspect the exact values used in the Theseus plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ship<span class="sc">$</span><span class="fu">table</span>(origin)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 8</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   origin contrib    n1    n2    x1    x2 rate1 rate2</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 EWR    -0.0831  9603  9410  6251  3901 0.651 0.415</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 JFK    -0.0565  8645  8923  5702  4332 0.660 0.485</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 LGA    -0.0358  8723  8687  5379  4393 0.617 0.506</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="flipping-the-plot" class="level3">
+<h3 class="anchored" data-anchor-id="flipping-the-plot">3.3 Flipping the Plot</h3>
+<p>When there are many subgroups, a Theseus plot can become hard to read. In such cases, you can swap the x- and y-axes for better visualization.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ship<span class="sc">$</span><span class="fu">plot_flip</span>(carrier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/plot_carrier-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>When the number of subgroups is large, those with small contributions are automatically grouped together. By default, this happens when there are more than 10 subgroups, but the threshold can be adjusted with the <code>n</code> argument.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ship<span class="sc">$</span><span class="fu">plot_flip</span>(carrier, <span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/prot_carrier_n-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>From this plot, JetBlue Airways and United Air Lines appear to have the largest contributions to the decline in on-time arrival rate.</p>
+</section>
+<section id="automatic-discretization-of-continuous-values" class="level3">
+<h3 class="anchored" data-anchor-id="automatic-discretization-of-continuous-values">3.4 Automatic Discretization of Continuous Values</h3>
+<p>Theseus plots do not directly support continuous variables. If a continuous column is provided, it is automatically discretized. For example, we can create a Theseus plot for departure delays.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ship<span class="sc">$</span><span class="fu">plot_flip</span>(dep_delay)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/plot_dep_delay-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>By default, continuous variables are discretized so that each subgroup has roughly equal sample sizes, with the number of bins set to 10. You can modify these settings by passing the return value of <code>continuous_config()</code> to the <code>continuous</code> argument.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ship<span class="sc">$</span><span class="fu">plot_flip</span>(dep_delay, <span class="at">continuous =</span> <span class="fu">continuous_config</span>(<span class="at">n =</span> <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/plot_dep_delay_n-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This result shows that both a decrease in on-time departures and an increase in delayed departures contributed to the decline in on-time arrival rate.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
