@@ -31,7 +31,7 @@
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/overview-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/overview-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -244,7 +244,7 @@ font-style: inherit;">plot</span>(origin)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/plot_origin-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/plot_origin-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -295,7 +295,7 @@ font-style: inherit;">plot_flip</span>(carrier)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/plot_carrier-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/plot_carrier-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -314,7 +314,7 @@ font-style: inherit;">5</span>)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/prot_carrier_n-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/prot_carrier_n-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -333,7 +333,7 @@ font-style: inherit;">plot_flip</span>(dep_delay)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/plot_dep_delay-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/plot_dep_delay-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -356,7 +356,7 @@ font-style: inherit;">5</span>))</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/plot_dep_delay_n-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot/index_files/figure-html/plot_dep_delay_n-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
