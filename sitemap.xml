@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://hoxo-m.github.io/blog/index.html</loc>
-    <lastmod>2025-08-30T07:13:23.394Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hoxo-m.github.io/blog/posts/adjustMLE/index.html</loc>
-    <lastmod>2025-08-30T07:13:23.394Z</lastmod>
-  </url>
-  <url>
     <loc>https://hoxo-m.github.io/blog/posts/TheseusPlot/index.html</loc>
-    <lastmod>2025-08-30T07:13:23.394Z</lastmod>
+    <lastmod>2026-03-12T10:03:48.486Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hoxo-m.github.io/blog/posts/deltatest-0-2-0/index.html</loc>
+    <lastmod>2026-03-12T10:03:48.486Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hoxo-m.github.io/blog/index.html</loc>
+    <lastmod>2026-03-12T10:03:48.486Z</lastmod>
   </url>
   <url>
     <loc>https://hoxo-m.github.io/blog/posts/deltatest/index.html</loc>
-    <lastmod>2025-08-30T07:13:23.395Z</lastmod>
+    <lastmod>2026-03-12T10:03:48.486Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hoxo-m.github.io/blog/posts/adjustMLE/index.html</loc>
+    <lastmod>2026-03-12T10:03:48.486Z</lastmod>
   </url>
 </urlset>
