@@ -8,13 +8,13 @@ website:
   margin-header: sidebar.html
   navbar:
     right:
-#      - about.qmd
+      # - about.qmd
       - icon: github
         href: https://github.com/hoxo-m/
+      # - icon: bluesky
+      #   href: https://bsky.app/profile/hoxo-m.bsky.social
       - icon: rss-fill
         href: index.xml
-#      - icon: twitter
-#        href: https://twitter.com
 format:
   html:
     theme: cosmo
