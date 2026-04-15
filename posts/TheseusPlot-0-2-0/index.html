@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Koji Makiyama">
-<meta name="dcterms.date" content="2025-03-15">
+<meta name="dcterms.date" content="2026-04-10">
 
-<title>New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing – HOXO-M Blog</title>
+<title>TheseusPlot 0.2.0: Visualizing Decomposition of Differences in Rate Metrics – HOXO-M Blog</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -150,7 +150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing</h1>
+      <h1 class="title">TheseusPlot 0.2.0: Visualizing Decomposition of Differences in Rate Metrics</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">R</div>
               </div>
@@ -170,7 +170,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 15, 2025</p>
+        <p class="date">April 10, 2026</p>
       </div>
     </div>
     
@@ -223,71 +223,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>In online A/B testing, we often face a significant practical challenge: the randomization unit differs from the analysis unit. Typically, control and treatment groups are randomly assigned at the user level, while metrics—such as click-through rate—are measured at a more granular level (e.g., per page-view). In this case, the randomization unit is user, but the analysis unit is page-view.</p>
-<p>This discrepancy raises concerns for statistical hypothesis testing, which assumes that data points are independent and identically distributed (i.i.d.). Specifically, a single user can generate multiple page-views, and each user may have a different probability of clicking. Consequently, the data may exhibit within-user correlation, thereby violating the i.i.d. assumption.</p>
-<p>When the standard Z-test is applied to such correlated data, the resulting p-values do not follow the expected uniform distribution under the null hypothesis. As a result, smaller p-values tend to occur more frequently even when there is no true difference, increasing the risk of falsely detecting a significant difference.</p>
-<p><img src="20250305012135.png" class="img-fluid"></p>
-<p>To address this problem, Deng et al.&nbsp;(2018) proposed a modified statistical hypothesis testing method. Their approach replaces the standard variance estimation formula in the Z-test with an approximate formula derived via the Delta method, which accounts for within-user correlation. To simplify the application of this method, the <strong>deltatest</strong> package has been developed.</p>
-<p>To illustrate how to use this package, we prepare a data frame that includes columns for the number of clicks and page-views aggregated for each user. This data frame also contains a column indicating whether each user was assigned to the control or treatment group.</p>
+<p><strong>TheseusPlot</strong> is an R package that decomposes differences in rate metrics between two groups into contributions from individual subgroups and visualizes the results as a “Theseus Plot”.</p>
+<p>The package is inspired by the <a href="https://en.wikipedia.org/wiki/Ship_of_Theseus">Ship of Theseus</a> thought experiment. It replaces subgroup data step by step, recalculates the overall metric at each step, and interprets each change as that subgroup’s contribution to the overall difference.</p>
+<p>Suppose you notice that the click-through rate is lower in 2025 than in 2024 and want to examine how a particular attribute, such as gender, contributed to the change. If you obtain a Theseus Plot like the one below, it suggests that men contributed more to the decline in click-through rate than women.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>n_user <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">314</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> deltatest<span class="sc">::</span><span class="fu">generate_dummy_data</span>(n_user) <span class="sc">|&gt;</span> </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">if_else</span>(group <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"control"</span>, <span class="st">"treatment"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(user_id, group) <span class="sc">|&gt;</span> </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">clicks =</span> <span class="fu">sum</span>(metric), <span class="at">pageviews =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>data</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2,000 × 4</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    user_id group     clicks pageviews</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt; &lt;chr&gt;      &lt;int&gt;     &lt;int&gt;</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1       1 treatment      1         6</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2       2 treatment      2        11</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3       3 control        0        17</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4       4 control        4        12</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5       5 control        5        10</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6       6 control        1        15</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7       7 control        2         6</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       8 treatment      2        11</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       9 treatment      2        16</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      10 control        0        17</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 1,990 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="man/figures/README-overview-1.png" class="img-fluid figure-img" width="500"></p>
+</figure>
 </div>
-<p>The statistical hypothesis test using the Delta method can then be performed on this data as follows:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(deltatest)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">deltatest</span>(data, clicks <span class="sc">/</span> pageviews, <span class="at">by =</span> group)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Two Sample Z-test Using the Delta Method</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  clicks/pageviews by group</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Z = 0.31437, p-value = 0.7532</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means between control and treatment is not equal to 0</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  -0.01410593  0.01949536</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   mean in control mean in treatment        difference </span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       0.245959325       0.248654038       0.002694713</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>This version of the Z-test yields p-values that follow the expected uniform distribution under the null hypothesis, even when within-user correlation is present.</p>
-<p><img src="20250305015654.png" class="img-fluid"></p>
-<p>For more details, refer to <a href="https://hoxo-m.github.io/deltatest/">https://hoxo-m.github.io/deltatest/</a>.</p>
+</div>
+<section id="whats-new-in-0.2.0" class="level2">
+<h2 class="anchored" data-anchor-id="whats-new-in-0.2.0">What’s new in 0.2.0</h2>
+<p>Version 0.2.0 includes the following changes:</p>
+<ul>
+<li>a fix for continuous-variable discretization with <code>split = "rate"</code>, where bin boundaries for the second group could previously be computed from the first group’s data</li>
+<li>a fix for the size bar of <code>"Sum of ... other attributes"</code>, which could incorrectly use the first group’s counts for both groups</li>
+<li>a fix for warnings in <code>plot()</code> and <code>plot_flip()</code> when multiple subgroups were tied for the largest absolute contribution</li>
+<li>suppression of warnings generated internally by <code>waterfalls::waterfall()</code> during plot creation.</li>
+</ul>
+<p>I would like to thank Kazuyuki Sano for reporting the first two issues and contributing to their fixes.</p>
+</section>
 <section id="installation" class="level2">
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
-<p>You can install the <strong>deltatest</strong> package from CRAN.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"deltatest"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You can install <strong>TheseusPlot</strong> from CRAN with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"TheseusPlot"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<ul>
-<li><a href="https://cran.r-project.org/package=deltatest">CRAN: Package deltatest</a></li>
-<li><a href="https://github.com/hoxo-m/deltatest">hoxo-m/deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing</a></li>
-<li>Deng, A., Knoblich, U., &amp; Lu, J. (2018). Applying the Delta Method in Metric Analytics: A Practical Guide with Novel Ideas. <em>Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery &amp; Data Mining.</em></li>
-</ul>
+<section id="try-it-out" class="level2">
+<h2 class="anchored" data-anchor-id="try-it-out">Try it out</h2>
+<p><strong>TheseusPlot</strong> may be useful when you want to understand why metrics such as conversion rate, retention rate, or click-through rate changed.</p>
+<p>For details on how to use it, please see the package website: <a href="https://hoxo-m.github.io/TheseusPlot/">https://hoxo-m.github.io/TheseusPlot/</a>.</p>
 
 
 </section>

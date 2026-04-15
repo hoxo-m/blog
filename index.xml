@@ -9,8 +9,63 @@
 <link>https://hoxo-m.github.io/blog/</link>
 <atom:link href="https://hoxo-m.github.io/blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Insights into R and Data Analysis</description>
-<generator>quarto-1.8.27</generator>
-<lastBuildDate>Thu, 12 Mar 2026 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.9.37</generator>
+<lastBuildDate>Fri, 10 Apr 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>TheseusPlot 0.2.0: Visualizing Decomposition of Differences in Rate Metrics</title>
+  <dc:creator>Koji Makiyama</dc:creator>
+  <link>https://hoxo-m.github.io/blog/posts/TheseusPlot-0-2-0/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p><strong>TheseusPlot</strong> is an R package that decomposes differences in rate metrics between two groups into contributions from individual subgroups and visualizes the results as a “Theseus Plot”.</p>
+<p>The package is inspired by the <a href="https://en.wikipedia.org/wiki/Ship_of_Theseus">Ship of Theseus</a> thought experiment. It replaces subgroup data step by step, recalculates the overall metric at each step, and interprets each change as that subgroup’s contribution to the overall difference.</p>
+<p>Suppose you notice that the click-through rate is lower in 2025 than in 2024 and want to examine how a particular attribute, such as gender, contributed to the change. If you obtain a Theseus Plot like the one below, it suggests that men contributed more to the decline in click-through rate than women.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://hoxo-m.github.io/blog/posts/TheseusPlot-0-2-0/man/figures/README-overview-1.png" class="img-fluid figure-img" width="500"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="whats-new-in-0.2.0" class="level2">
+<h2 class="anchored" data-anchor-id="whats-new-in-0.2.0">What’s new in 0.2.0</h2>
+<p>Version 0.2.0 includes the following changes:</p>
+<ul>
+<li>a fix for continuous-variable discretization with <code>split = "rate"</code>, where bin boundaries for the second group could previously be computed from the first group’s data</li>
+<li>a fix for the size bar of <code>"Sum of ... other attributes"</code>, which could incorrectly use the first group’s counts for both groups</li>
+<li>a fix for warnings in <code>plot()</code> and <code>plot_flip()</code> when multiple subgroups were tied for the largest absolute contribution</li>
+<li>suppression of warnings generated internally by <code>waterfalls::waterfall()</code> during plot creation.</li>
+</ul>
+<p>I would like to thank Kazuyuki Sano for reporting the first two issues and contributing to their fixes.</p>
+</section>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<p>You can install <strong>TheseusPlot</strong> from CRAN with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"TheseusPlot"</span>)</span></code></pre></div></div>
+</section>
+<section id="try-it-out" class="level2">
+<h2 class="anchored" data-anchor-id="try-it-out">Try it out</h2>
+<p><strong>TheseusPlot</strong> may be useful when you want to understand why metrics such as conversion rate, retention rate, or click-through rate changed.</p>
+<p>For details on how to use it, please see the package website: <a href="https://hoxo-m.github.io/TheseusPlot/">https://hoxo-m.github.io/TheseusPlot/</a>.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>R</category>
+  <guid>https://hoxo-m.github.io/blog/posts/TheseusPlot-0-2-0/</guid>
+  <pubDate>Fri, 10 Apr 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>deltatest 0.2.0: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing</title>
   <dc:creator>Koji Makiyama</dc:creator>
