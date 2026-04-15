@@ -1,0 +1,17 @@
+{
+  "hash": "71cd1ac8ec0e14653be2fac67d020e0a",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"TheseusPlot 0.2.0: Visualizing Decomposition of Differences in Rate Metrics\"\nauthor: \"Koji Makiyama\"\ndate: 2026-4-10\ncategories: [R]\n---\n\n\n\n**TheseusPlot** is an R package that decomposes differences in rate metrics between two groups into contributions from individual subgroups and visualizes the results as a “Theseus Plot”.\n\nThe package is inspired by the [Ship of Theseus](https://en.wikipedia.org/wiki/Ship_of_Theseus) thought experiment.\nIt replaces subgroup data step by step, recalculates the overall metric at each step, and interprets each change as that subgroup’s contribution to the overall difference.\n\nSuppose you notice that the click-through rate is lower in 2025 than in 2024 and want to examine how a particular attribute, such as gender, contributed to the change.\nIf you obtain a Theseus Plot like the one below, it suggests that men contributed more to the decline in click-through rate than women.\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](man/figures/README-overview-1.png){width=500}\n:::\n:::\n\n\n## What’s new in 0.2.0\n\nVersion 0.2.0 includes the following changes:\n\n- a fix for continuous-variable discretization with `split = \"rate\"`, where bin boundaries for the second group could previously be computed from the first group’s data\n- a fix for the size bar of `\"Sum of ... other attributes\"`, which could incorrectly use the first group’s counts for both groups\n- a fix for warnings in `plot()` and `plot_flip()` when multiple subgroups were tied for the largest absolute contribution\n- suppression of warnings generated internally by `waterfalls::waterfall()` during plot creation.\n\nI would like to thank Kazuyuki Sano for reporting the first two issues and contributing to their fixes.\n\n## Installation\n\nYou can install **TheseusPlot** from CRAN with:\n\n```r\ninstall.packages(\"TheseusPlot\")\n```\n\n## Try it out\n\n**TheseusPlot** may be useful when you want to understand why metrics such as conversion rate, retention rate, or click-through rate changed.\n\nFor details on how to use it, please see the package website: [https://hoxo-m.github.io/TheseusPlot/](https://hoxo-m.github.io/TheseusPlot/).\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
