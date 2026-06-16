@@ -15,7 +15,13 @@ website:
       #   href: https://bsky.app/profile/hoxo-m.bsky.social
       - icon: rss-fill
         href: index.xml
-  google-analytics: "G-RDZMKR8HFQ"
+  google-analytics:
+    tracking-id: "G-RDZMKR8HFQ"
+    anonymize-ip: true
+  cookie-consent:
+    type: express
+    style: simple
+    palette: light
 format:
   html:
     theme: cosmo
