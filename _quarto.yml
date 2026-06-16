@@ -7,14 +7,21 @@ website:
   description: "Insights into R and Data Analysis"
   margin-header: sidebar.html
   navbar:
+    logo: favicon.png
     right:
       # - about.qmd
       - icon: github
         href: https://github.com/hoxo-m/
-      # - icon: bluesky
-      #   href: https://bsky.app/profile/hoxo-m.bsky.social
+        aria-label: GitHub
+      - icon: translate
+        href: https://hoxo-m.hatenablog.com/
+        aria-label: Japanese Blog
+      - icon: bluesky
+        href: https://bsky.app/profile/hoxo-m.bsky.social
+        aria-label: Bluesky
       - icon: rss-fill
         href: index.xml
+        aria-label: RSS
   google-analytics:
     tracking-id: "G-RDZMKR8HFQ"
     anonymize-ip: true
@@ -25,6 +32,7 @@ website:
   open-graph: true
   twitter-card:
     card-style: summary_large_image
+  favicon: favicon.png
 format:
   html:
     theme: cosmo
