@@ -9,7 +9,7 @@
 <link>https://hoxo-m.github.io/blog/#category=R</link>
 <atom:link href="https://hoxo-m.github.io/blog/index-r.xml" rel="self" type="application/rss+xml"/>
 <description>Insights into R and Data Analysis</description>
-<generator>quarto-1.9.37</generator>
+<generator>quarto-1.9.38</generator>
 <lastBuildDate>Fri, 10 Apr 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>TheseusPlot 0.2.0: Visualizing Decomposition of Differences in Rate Metrics</title>
