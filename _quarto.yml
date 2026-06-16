@@ -22,6 +22,9 @@ website:
     type: express
     style: simple
     palette: light
+  open-graph: true
+  twitter-card:
+    card-style: summary_large_image
 format:
   html:
     theme: cosmo
