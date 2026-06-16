@@ -15,6 +15,7 @@ website:
       #   href: https://bsky.app/profile/hoxo-m.bsky.social
       - icon: rss-fill
         href: index.xml
+  google-analytics: "G-RDZMKR8HFQ"
 format:
   html:
     theme: cosmo
