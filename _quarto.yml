@@ -13,12 +13,18 @@ website:
       - icon: github
         href: https://github.com/hoxo-m/
         aria-label: GitHub
+        target: _blank
+        rel: noopener noreferrer
       - icon: translate
         href: https://hoxo-m.hatenablog.com/
         aria-label: Japanese Blog
+        target: _blank
+        rel: noopener
       - icon: bluesky
         href: https://bsky.app/profile/hoxo-m.bsky.social
         aria-label: Bluesky
+        target: _blank
+        rel: noopener noreferrer
       - icon: rss-fill
         href: index.xml
         aria-label: RSS
