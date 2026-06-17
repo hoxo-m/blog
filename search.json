@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "HOXO-M Blog",
     "section": "",
-    "text": "TheseusPlot 0.2.0: Visualizing Decomposition of Differences in Rate Metrics\n\n\n\nR\n\n\n\n\n\n\n\n\n\nApr 10, 2026\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\ndeltatest 0.2.0: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\n\n\n\nR\n\n\n\n\n\n\n\n\n\nMar 12, 2026\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\nNew R Package TheseusPlot: Visualizing Decomposition of Differences in Rate Metrics\n\n\n\nR\n\n\n\n\n\n\n\n\n\nAug 30, 2025\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\nNew R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\n\n\n\nR\n\n\n\n\n\n\n\n\n\nMar 15, 2025\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\nMLE Adjustment for High-Dimensional Logistic Regression\n\n\n\nR\n\n\n\n\n\n\n\n\n\nNov 8, 2024\n\n\nKoji Makiyama\n\n\n\n\n\nNo matching items"
+    "text": "TheseusPlot 0.3.0: Visualizing the Decomposition of Differences in Rate Metrics\n\n\n\nR\n\n\n\n\n\n\n\n\n\nJun 17, 2026\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\nTheseusPlot 0.2.0: Visualizing Decomposition of Differences in Rate Metrics\n\n\n\nR\n\n\n\n\n\n\n\n\n\nApr 10, 2026\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\ndeltatest 0.2.0: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\n\n\n\nR\n\n\n\n\n\n\n\n\n\nMar 12, 2026\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\nNew R Package TheseusPlot: Visualizing Decomposition of Differences in Rate Metrics\n\n\n\nR\n\n\n\n\n\n\n\n\n\nAug 30, 2025\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\nNew R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing\n\n\n\nR\n\n\n\n\n\n\n\n\n\nMar 15, 2025\n\n\nKoji Makiyama\n\n\n\n\n\n\n\n\n\n\n\n\nMLE Adjustment for High-Dimensional Logistic Regression\n\n\n\nR\n\n\n\n\n\n\n\n\n\nNov 8, 2024\n\n\nKoji Makiyama\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/deltatest-0-2-0/index.html",
@@ -54,6 +54,41 @@
     "title": "MLE Adjustment for High-Dimensional Logistic Regression",
     "section": "References",
     "text": "References\n\nSur, P., & Candès, E.J. (2018). A modern maximum-likelihood theory for high-dimensional logistic regression. Proceedings of the National Academy of Sciences of the United States of America, 116, 14516 - 14525.\nYadlowsky, S., Yun, T., McLean, C.Y., & D’Amour, A. (2021). SLOE: A Faster Method for Statistical Inference in High-Dimensional Logistic Regression. Neural Information Processing Systems."
+  },
+  {
+    "objectID": "posts/TheseusPlot-0-3-0/index.html",
+    "href": "posts/TheseusPlot-0-3-0/index.html",
+    "title": "TheseusPlot 0.3.0: Visualizing the Decomposition of Differences in Rate Metrics",
+    "section": "",
+    "text": "TheseusPlot is an R package that decomposes differences in a rate metric between two groups into subgroup-level contributions and visualizes the results as a “Theseus Plot”.\nFor example, when a click-through rate, conversion rate, or retention rate differs between two time periods or groups, TheseusPlot helps answer questions such as: which subgroup contributed most to the difference?\nSuppose that the click-through rate (CTR) was 6.2% in 2024 and 5.2% in 2025, a decrease of 1.0 percentage point. A Theseus Plot can show how this decrease is decomposed: in this example, 0.8 percentage points are assigned to male users and 0.2 percentage points to female users under the decomposition.\nVersion 0.3.0 is now available on CRAN. This release fixes a compatibility issue with waterfalls 1.1.4, improves subgroup size bar rendering, and refines several plot defaults."
+  },
+  {
+    "objectID": "posts/TheseusPlot-0-3-0/index.html#whats-new-in-0.3.0",
+    "href": "posts/TheseusPlot-0-3-0/index.html#whats-new-in-0.3.0",
+    "title": "TheseusPlot 0.3.0: Visualizing the Decomposition of Differences in Rate Metrics",
+    "section": "What’s new in 0.3.0",
+    "text": "What’s new in 0.3.0\n\nCleaner plot labels\nIn earlier versions, TheseusPlot automatically displayed the analyzed column name as a subtitle. However, this was not always useful, especially when the plot was already used in a document or presentation where the context was clear.\nIn version 0.3.0, the automatic column-name subtitle has been removed. This makes the resulting plots cleaner and easier to combine with custom titles, captions, and surrounding text.\nThis release also adds an xlab argument to create_ship(), so you can customize the x-axis label used by plot() and plot_flip().\nFor example:\n\nship &lt;- create_ship(\n  data_2024,\n  data_2025,\n  y = clicked,\n  labels = c(\"2024\", \"2025\"),\n  xlab = \"Gender\",\n  ylab = \"CTR (%)\"\n)\n\nship$plot(gender)\n\n\n\n\n\n\n\n\nThis is useful when the column name in the data is short or technical, but you want a more readable label in the plot.\n\n\nBetter default labels\nThe default group labels have been changed from \"Original\" and \"Refitted\" to \"Baseline\" and \"Comparison\".\n\nship &lt;- create_ship(\n  data_2024,\n  data_2025,\n  y = clicked\n)\n\nship$plot(gender)\n\n\n\n\n\n\n\n\nThe previous labels reflected the internal idea of replacing one group with another, but they were not always intuitive for users. The new defaults better match common comparison scenarios, such as year-over-year comparisons, control versus treatment, and before-and-after analyses.\nOf course, you can still specify your own labels:\n\nship &lt;- create_ship(\n  data_Nov,\n  data_Dec,\n  y = on_time,\n  labels = c(\"November\", \"December\")\n)\n\n\n\nSimpler numeric display\nThe default number of displayed decimal places has been changed from 3 to 1.\nIn many plots, three decimal places made the labels more detailed than necessary. Since TheseusPlot is mainly intended to help users understand the structure of a metric difference, one decimal place is often enough for visual interpretation.\nYou can still control the precision with the digits argument when needed.\n\nship &lt;- create_ship(\n  data_2024,\n  data_2025,\n  y = clicked,\n  labels = c(\"2024\", \"2025\"),\n  digits = 2\n)\n\nship$plot(gender)"
+  },
+  {
+    "objectID": "posts/TheseusPlot-0-3-0/index.html#plot-improvements-and-bug-fixes",
+    "href": "posts/TheseusPlot-0-3-0/index.html#plot-improvements-and-bug-fixes",
+    "title": "TheseusPlot 0.3.0: Visualizing the Decomposition of Differences in Rate Metrics",
+    "section": "Plot improvements and bug fixes",
+    "text": "Plot improvements and bug fixes\nVersion 0.3.0 also includes several improvements and bug fixes related to plot rendering.\nFirst, missing subgroup size bars in plot() and plot_flip() with waterfalls 1.1.4 have been fixed. Subgroup size bars are an important part of Theseus Plots because they show the sample size of each subgroup in both groups. Without them, it becomes harder to judge whether a large contribution comes from a large subgroup, a large rate difference, or both.\nSecond, subgroup size bar scaling has been improved. Bar heights are now computed consistently from the maximum plot score in both plot() and plot_flip(). This makes visual comparisons more stable across plot directions. The maximum height of these bars can still be controlled with the bar_max_value argument.\nThird, text_size handling has been fixed when applying the current ggplot2 theme. This makes text scaling more predictable when users customize plot themes.\n\nship &lt;- create_ship(\n  data_2024,\n  data_2025,\n  y = clicked,\n  labels = c(\"2024\", \"2025\"),\n  text_size = 1.5\n)\n\nship$plot(gender)"
+  },
+  {
+    "objectID": "posts/TheseusPlot-0-3-0/index.html#installation",
+    "href": "posts/TheseusPlot-0-3-0/index.html#installation",
+    "title": "TheseusPlot 0.3.0: Visualizing the Decomposition of Differences in Rate Metrics",
+    "section": "Installation",
+    "text": "Installation\nYou can install TheseusPlot from CRAN with:\ninstall.packages(\"TheseusPlot\")"
+  },
+  {
+    "objectID": "posts/TheseusPlot-0-3-0/index.html#try-it-out",
+    "href": "posts/TheseusPlot-0-3-0/index.html#try-it-out",
+    "title": "TheseusPlot 0.3.0: Visualizing the Decomposition of Differences in Rate Metrics",
+    "section": "Try it out",
+    "text": "Try it out\nTheseusPlot is useful when you want to understand why rate metrics differ between two groups.\nTypical examples include:\n\nclick-through rate\nconversion rate\nretention rate\nsuccess rate\nerror rate\n\nFor details, please see the package website:\n\nhttps://hoxo-m.github.io/TheseusPlot/"
   },
   {
     "objectID": "posts/TheseusPlot/index.html",

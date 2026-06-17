@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Koji Makiyama">
 
-<title>HOXO-M Blog</title>
+<title>TheseusPlot 0.3.0: Visualizing the Decomposition of Differences in Rate Metrics – HOXO-M Blog</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,31 +24,64 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/cookie-consent/cookie-consent.js"></script>
-<link href="site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-bba5ebae505b5c03f3f0d8040a416a6b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bba5ebae505b5c03f3f0d8040a416a6b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -75,35 +109,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-RDZMKR8HFQ"></script>
 
 <script type="text/plain" cookie-consent="tracking">
@@ -132,51 +137,22 @@ cookieconsent.run({
 </script> 
   
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="HOXO-M Blog" href="index.xml" data-external="1"><meta property="og:title" content="HOXO-M Blog">
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="TheseusPlot 0.3.0: Visualizing the Decomposition of Differences in Rate Metrics – HOXO-M Blog">
 <meta property="og:description" content="Insights into R and Data Analysis">
-<meta property="og:image" content="https://hoxo-m.github.io/blog/posts/TheseusPlot-0-3-0/figures/example-1.png">
+<meta property="og:image" content="https://hoxo-m.github.io/blog/posts/TheseusPlot-0-3-0/thumbnail.png">
 <meta property="og:site_name" content="HOXO-M Blog">
 <meta property="og:image:alt" content="Theseus Plot for rate metric decomposition">
-<meta property="og:image:height" content="1152">
-<meta property="og:image:width" content="1536">
-<meta name="twitter:title" content="HOXO-M Blog">
+<meta property="og:image:height" content="909">
+<meta property="og:image:width" content="1731">
+<meta name="twitter:title" content="TheseusPlot 0.3.0: Visualizing the Decomposition of Differences in Rate Metrics – HOXO-M Blog">
 <meta name="twitter:description" content="Insights into R and Data Analysis">
-<meta name="twitter:image" content="https://hoxo-m.github.io/blog/posts/TheseusPlot-0-3-0/figures/example-1.png">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://hoxo-m.github.io/blog/posts/TheseusPlot-0-3-0/thumbnail.png">
 <meta name="twitter:image:alt" content="Theseus Plot for rate metric decomposition">
-<meta name="twitter:image-height" content="1152">
-<meta name="twitter:image-width" content="1536">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="909">
+<meta name="twitter:image-width" content="1731">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -186,11 +162,11 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./favicon.png" alt="" class="navbar-logo light-content">
-    <img src="./favicon.png" alt="" class="navbar-logo dark-content">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../favicon.png" alt="" class="navbar-logo light-content">
+    <img src="../../favicon.png" alt="" class="navbar-logo dark-content">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">HOXO-M Blog</span>
     </a>
   </div>
@@ -216,7 +192,7 @@ window.Quarto = {
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="./index.xml"> <i class="bi bi-rss-fill" role="img" aria-label="RSS">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss-fill" role="img" aria-label="RSS">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -230,22 +206,36 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">HOXO-M Blog</h1>
-            <p class="subtitle lead">Insights into R and Data Analysis</p>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">TheseusPlot 0.3.0: Visualizing the Decomposition of Differences in Rate Metrics</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Koji Makiyama </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">Jun 17, 2026</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar"><div class="quarto-margin-header"><div class="margin-header-item">
@@ -282,203 +272,161 @@ window.Quarto = {
 
 </div></div>
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(6)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(6)</span></div></div></div>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<p><strong>TheseusPlot</strong> is an R package that decomposes differences in a rate metric between two groups into subgroup-level contributions and visualizes the results as a “Theseus Plot”.</p>
+<p>For example, when a click-through rate, conversion rate, or retention rate differs between two time periods or groups, TheseusPlot helps answer questions such as: which subgroup contributed most to the difference?</p>
+<p>Suppose that the click-through rate (CTR) was 6.2% in 2024 and 5.2% in 2025, a decrease of 1.0 percentage point. A Theseus Plot can show how this decrease is decomposed: in this example, 0.8 percentage points are assigned to male users and 0.2 percentage points to female users under the decomposition.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="figures/example-1.png" class="img-fluid figure-img" width="500"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Version 0.3.0 is now available on CRAN. This release fixes a compatibility issue with waterfalls 1.1.4, improves subgroup size bar rendering, and refines several plot defaults.</p>
+<section id="whats-new-in-0.3.0" class="level2">
+<h2 class="anchored" data-anchor-id="whats-new-in-0.3.0">What’s new in 0.3.0</h2>
+<section id="cleaner-plot-labels" class="level3">
+<h3 class="anchored" data-anchor-id="cleaner-plot-labels">Cleaner plot labels</h3>
+<p>In earlier versions, TheseusPlot automatically displayed the analyzed column name as a subtitle. However, this was not always useful, especially when the plot was already used in a document or presentation where the context was clear.</p>
+<p>In version 0.3.0, the automatic column-name subtitle has been removed. This makes the resulting plots cleaner and easier to combine with custom titles, captions, and surrounding text.</p>
+<p>This release also adds an <code>xlab</code> argument to <code>create_ship()</code>, so you can customize the x-axis label used by <code>plot()</code> and <code>plot_flip()</code>.</p>
+<p>For example:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ship <span class="ot">&lt;-</span> <span class="fu">create_ship</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  data_2024,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  data_2025,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> clicked,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"2024"</span>, <span class="st">"2025"</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Gender"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"CTR (%)"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>ship<span class="sc">$</span><span class="fu">plot</span>(gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="figures/xlab-1.png" class="img-fluid figure-img" width="500"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is useful when the column name in the data is short or technical, but you want a more readable label in the plot.</p>
+</section>
+<section id="better-default-labels" class="level3">
+<h3 class="anchored" data-anchor-id="better-default-labels">Better default labels</h3>
+<p>The default group labels have been changed from <code>"Original"</code> and <code>"Refitted"</code> to <code>"Baseline"</code> and <code>"Comparison"</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ship <span class="ot">&lt;-</span> <span class="fu">create_ship</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  data_2024,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  data_2025,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> clicked</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>ship<span class="sc">$</span><span class="fu">plot</span>(gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="figures/no-labels-1.png" class="img-fluid figure-img" width="500"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The previous labels reflected the internal idea of replacing one group with another, but they were not always intuitive for users. The new defaults better match common comparison scenarios, such as year-over-year comparisons, control versus treatment, and before-and-after analyses.</p>
+<p>Of course, you can still specify your own labels:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ship <span class="ot">&lt;-</span> <span class="fu">create_ship</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  data_Nov,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  data_Dec,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> on_time,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"November"</span>, <span class="st">"December"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="simpler-numeric-display" class="level3">
+<h3 class="anchored" data-anchor-id="simpler-numeric-display">Simpler numeric display</h3>
+<p>The default number of displayed decimal places has been changed from 3 to 1.</p>
+<p>In many plots, three decimal places made the labels more detailed than necessary. Since TheseusPlot is mainly intended to help users understand the structure of a metric difference, one decimal place is often enough for visual interpretation.</p>
+<p>You can still control the precision with the <code>digits</code> argument when needed.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ship <span class="ot">&lt;-</span> <span class="fu">create_ship</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  data_2024,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  data_2025,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> clicked,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"2024"</span>, <span class="st">"2025"</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">2</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>ship<span class="sc">$</span><span class="fu">plot</span>(gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="figures/digits-1.png" class="img-fluid figure-img" width="500"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="plot-improvements-and-bug-fixes" class="level2">
+<h2 class="anchored" data-anchor-id="plot-improvements-and-bug-fixes">Plot improvements and bug fixes</h2>
+<p>Version 0.3.0 also includes several improvements and bug fixes related to plot rendering.</p>
+<p>First, missing subgroup size bars in <code>plot()</code> and <code>plot_flip()</code> with waterfalls 1.1.4 have been fixed. Subgroup size bars are an important part of Theseus Plots because they show the sample size of each subgroup in both groups. Without them, it becomes harder to judge whether a large contribution comes from a large subgroup, a large rate difference, or both.</p>
+<p>Second, subgroup size bar scaling has been improved. Bar heights are now computed consistently from the maximum plot score in both <code>plot()</code> and <code>plot_flip()</code>. This makes visual comparisons more stable across plot directions. The maximum height of these bars can still be controlled with the <code>bar_max_value</code> argument.</p>
+<p>Third, <code>text_size</code> handling has been fixed when applying the current ggplot2 theme. This makes text scaling more predictable when users customize plot themes.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ship <span class="ot">&lt;-</span> <span class="fu">create_ship</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  data_2024,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  data_2025,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> clicked,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"2024"</span>, <span class="st">"2025"</span>),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">text_size =</span> <span class="fl">1.5</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>ship<span class="sc">$</span><span class="fu">plot</span>(gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="figures/text_size-1.png" class="img-fluid figure-img" width="500"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<p>You can install TheseusPlot from CRAN with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"TheseusPlot"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="try-it-out" class="level2">
+<h2 class="anchored" data-anchor-id="try-it-out">Try it out</h2>
+<p>TheseusPlot is useful when you want to understand why rate metrics differ between two groups.</p>
+<p>Typical examples include:</p>
+<ul>
+<li>click-through rate</li>
+<li>conversion rate</li>
+<li>retention rate</li>
+<li>success rate</li>
+<li>error rate</li>
+</ul>
+<p>For details, please see the package website:</p>
+<ul>
+<li><a href="https://hoxo-m.github.io/TheseusPlot/">https://hoxo-m.github.io/TheseusPlot/</a></li>
+</ul>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Ug==" data-listing-date-sort="1781701200000" data-listing-file-modified-sort="1781701769524" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="757">
-<div class="thumbnail"><a href="./posts/TheseusPlot-0-3-0/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/TheseusPlot-0-3-0/figures/example-1.png" class="thumbnail-image" alt="Theseus Plot for rate metric decomposition">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/TheseusPlot-0-3-0/index.html" class="no-external">TheseusPlot 0.3.0: Visualizing the Decomposition of Differences in Rate Metrics</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/TheseusPlot-0-3-0/index.html" class="no-external">
-<strong>TheseusPlot</strong> is an R package that decomposes differences in a rate metric between two groups into subgroup-level contributions and visualizes the results as a “Theseus Plot”.
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/TheseusPlot-0-3-0/index.html" class="no-external">
-<div class="listing-date">
-Jun 17, 2026
-</div>
-<div class="listing-author">
-Koji Makiyama
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Ug==" data-listing-date-sort="1775779200000" data-listing-file-modified-sort="1781701769524" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="432">
-<div class="thumbnail"><a href="./posts/TheseusPlot-0-2-0/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/TheseusPlot-0-2-0/man/figures/README-overview-1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/TheseusPlot-0-2-0/index.html" class="no-external">TheseusPlot 0.2.0: Visualizing Decomposition of Differences in Rate Metrics</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/TheseusPlot-0-2-0/index.html" class="no-external">
-<strong>TheseusPlot</strong> is an R package that decomposes differences in rate metrics between two groups into contributions from individual subgroups and visualizes the results as a…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/TheseusPlot-0-2-0/index.html" class="no-external">
-<div class="listing-date">
-Apr 10, 2026
-</div>
-<div class="listing-author">
-Koji Makiyama
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="Ug==" data-listing-date-sort="1773273600000" data-listing-file-modified-sort="1781701769525" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="594">
-<div class="thumbnail"><a href="./posts/deltatest-0-2-0/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/deltatest-0-2-0/index_files/figure-html/tidy-example2-1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/deltatest-0-2-0/index.html" class="no-external">deltatest 0.2.0: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/deltatest-0-2-0/index.html" class="no-external">
-I’m happy to share a new release of <strong>deltatest</strong>.
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/deltatest-0-2-0/index.html" class="no-external">
-<div class="listing-date">
-Mar 12, 2026
-</div>
-<div class="listing-author">
-Koji Makiyama
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="Ug==" data-listing-date-sort="1756512000000" data-listing-file-modified-sort="1781701769525" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1068">
-<div class="thumbnail"><a href="./posts/TheseusPlot/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/TheseusPlot/index_files/figure-html/overview-1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/TheseusPlot/index.html" class="no-external">New R Package TheseusPlot: Visualizing Decomposition of Differences in Rate Metrics</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/TheseusPlot/index.html" class="no-external">
-In data analysis, when a metric differs between two groups, we sometimes want to investigate whether a particular subgroup is driving that difference. For example, when a…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/TheseusPlot/index.html" class="no-external">
-<div class="listing-date">
-Aug 30, 2025
-</div>
-<div class="listing-author">
-Koji Makiyama
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="Ug==" data-listing-date-sort="1741996800000" data-listing-file-modified-sort="1781701769526" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="405">
-<div class="thumbnail"><a href="./posts/deltatest/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/deltatest/20250305012135.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/deltatest/index.html" class="no-external">New R Package deltatest: Statistical Hypothesis Testing Using the Delta Method for Online A/B Testing</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/deltatest/index.html" class="no-external">
-In online A/B testing, we often face a significant practical challenge: the randomization unit differs from the analysis unit. Typically, control and treatment groups are…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/deltatest/index.html" class="no-external">
-<div class="listing-date">
-Mar 15, 2025
-</div>
-<div class="listing-author">
-Koji Makiyama
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="Ug==" data-listing-date-sort="1731024000000" data-listing-file-modified-sort="1781701769525" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="494">
-<div class="thumbnail"><a href="./posts/adjustMLE/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/adjustMLE/index_files/figure-html/unnamed-chunk-1-1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/adjustMLE/index.html" class="no-external">MLE Adjustment for High-Dimensional Logistic Regression</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/adjustMLE/index.html" class="no-external">
-The maximum likelihood estimator (MLE) of the logistic regression model is not an unbiased estimator. Therefore, estimates calculated with <code>glm()</code> contain bias. Since the MLE…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/adjustMLE/index.html" class="no-external">
-<div class="listing-date">
-Nov 8, 2024
-</div>
-<div class="listing-author">
-Koji Makiyama
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
